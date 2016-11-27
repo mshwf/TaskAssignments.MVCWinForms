@@ -1,0 +1,49 @@
+﻿@using SharedModels;
+@model UsersAndRolesMVC.ViewModels.TasksUsers
+
+@{
+    ViewBag.Title = "Tasks";
+}
+
+<h3>All Tasks</h3>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Task</th>
+        <th>Description</th>
+        <th>Due Date</th>
+        <th>Status</th>
+    </tr>
+    @foreach (var task in Model.Tasks)
+    {
+        string selectedRow = "";
+        if(ViewBag.Row==task.Id)
+        {
+            selectedRow = "success";
+        }
+        <tr class="@selectedRow">
+            <td>@Html.ActionLink(task.Title, "Index", new { taskId = task.Id })</td>
+            <td>@task.Description</td>
+            <td>@task.DueDate.ToShortDateString()</td>
+            <td>@task.Sataus</td>
+        </tr>
+    }
+</table>
+
+@if (Model.Users != null)
+{
+    <h3>Users Participating In The Selected Task</h3>
+    <table class="table">
+        <tr>
+            <th>User Name</th>
+            <th>Email</th>
+        </tr>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+            </tr>
+        }
+    </table>
+}
