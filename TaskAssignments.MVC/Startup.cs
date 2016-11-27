@@ -22,22 +22,12 @@ namespace UsersAndRolesMVC
             ApplicationDbContext context = new ApplicationDbContext();
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            string pwd = "123@Asd";
 
             if (!roleManager.RoleExists("Admin"))
             {
                 var adminRole = new IdentityRole { Name = "Admin" };
                 roleManager.Create(adminRole);
-            }
-
-            if (userManager.FindByName("Taher") == null)
-            {
-                var user = new ApplicationUser { Email = "admin@app.net", UserName = "Mohamed" };
-                string pwd = "123@Asd";
-                var result = userManager.Create(user, pwd);
-                if (!userManager.IsInRole(user.Id, "Admin"))
-                {
-                    userManager.AddToRole(user.Id, "Admin");
-                }
             }
 
             if (!roleManager.RoleExists("Manager"))
@@ -46,36 +36,57 @@ namespace UsersAndRolesMVC
                 roleManager.Create(role);
 
             }
-            if (userManager.FindByName("Abdallah") == null)
-            {
-                var user = new ApplicationUser { Email = "man@app.net", UserName = "Abdallah" };
-                string pwd = "123@Asd";
-                var result = userManager.Create(user, pwd);
-
-                if (!userManager.IsInRole(user.Id, "Manager"))
-                {
-                    userManager.AddToRole(user.Id, "Manager");
-                }
-
-
-            }
             if (!roleManager.RoleExists("Employee"))
             {
                 var role = new IdentityRole { Name = "Employee" };
                 roleManager.Create(role);
             }
 
+            if (userManager.FindByName("Mohamed") == null)
+            {
+                var user = new ApplicationUser { Email = "admin@app.net", UserName = "Mohamed" };
+                var result = userManager.Create(user, pwd);
+                userManager.AddToRole(user.Id, "Admin");
+            }
+
+
+            if (userManager.FindByName("Abdallah") == null)
+            {
+                var user = new ApplicationUser { Email = "abd@app.net", UserName = "Abdallah" };
+                var result = userManager.Create(user, pwd);
+                userManager.AddToRole(user.Id, "Manager");
+            }
+            if (userManager.FindByName("Asmaa") == null)
+            {
+                var user = new ApplicationUser { Email = "asm@app.net", UserName = "Asmaa" };
+                var result = userManager.Create(user, pwd);
+                userManager.AddToRole(user.Id, "Manager");
+            }
+
             if (userManager.FindByName("Ahmed") == null)
             {
-                var user = new ApplicationUser { Email = "emp@app.net", UserName = "Ahmed" };
-                string pwd = "123@Asd";
+                var user = new ApplicationUser { Email = "ahm@app.net", UserName = "Ahmed" };
                 var result = userManager.Create(user, pwd);
-                if (!userManager.IsInRole(user.Id, "Employee"))
-                {
-                    userManager.AddToRole(user.Id, "Employee");
-                }
+                userManager.AddToRole(user.Id, "Employee");
+            }
+            if (userManager.FindByName("Kamal") == null)
+            {
+                var user = new ApplicationUser { Email = "kam@app.net", UserName = "Kamal" };
+                var result = userManager.Create(user, pwd);
+                userManager.AddToRole(user.Id, "Employee");
+            }
+            if (userManager.FindByName("Alyaa") == null)
+            {
+                var user = new ApplicationUser { Email = "aly@app.net", UserName = "Alyaa" };
+                var result = userManager.Create(user, pwd);
+                userManager.AddToRole(user.Id, "Employee");
+            }
 
-
+            if (userManager.FindByName("Reda") == null)
+            {
+                var user = new ApplicationUser { Email = "red@app.net", UserName = "Reda" };
+                var result = userManager.Create(user, pwd);
+                userManager.AddToRole(user.Id, "Employee");
             }
 
         }

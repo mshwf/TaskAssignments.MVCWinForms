@@ -55,7 +55,7 @@
             this.adminToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(467, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(454, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -71,14 +71,14 @@
             // loginToolStripMenuItem
             // 
             this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
-            this.loginToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loginToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.loginToolStripMenuItem.Text = "Log In";
             this.loginToolStripMenuItem.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
             // 
             // logOffToolStripMenuItem
             // 
             this.logOffToolStripMenuItem.Name = "logOffToolStripMenuItem";
-            this.logOffToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.logOffToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.logOffToolStripMenuItem.Text = "Log Off";
             this.logOffToolStripMenuItem.Click += new System.EventHandler(this.logOffToolStripMenuItem_Click);
             // 
@@ -86,7 +86,7 @@
             // 
             this.btnAddTask.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddTask.ForeColor = System.Drawing.Color.Navy;
-            this.btnAddTask.Location = new System.Drawing.Point(98, 264);
+            this.btnAddTask.Location = new System.Drawing.Point(98, 325);
             this.btnAddTask.Name = "btnAddTask";
             this.btnAddTask.Size = new System.Drawing.Size(100, 35);
             this.btnAddTask.TabIndex = 5;
@@ -149,7 +149,7 @@
             this.listBoxUsers.Location = new System.Drawing.Point(98, 171);
             this.listBoxUsers.Name = "listBoxUsers";
             this.listBoxUsers.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBoxUsers.Size = new System.Drawing.Size(213, 84);
+            this.listBoxUsers.Size = new System.Drawing.Size(213, 148);
             this.listBoxUsers.TabIndex = 11;
             // 
             // label3
@@ -210,7 +210,7 @@
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 9F);
             this.groupBox1.Location = new System.Drawing.Point(99, 27);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(332, 314);
+            this.groupBox1.Size = new System.Drawing.Size(332, 367);
             this.groupBox1.TabIndex = 17;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Task Details";
@@ -219,13 +219,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 360);
+            this.ClientSize = new System.Drawing.Size(454, 407);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "Frm_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Task Assignments";

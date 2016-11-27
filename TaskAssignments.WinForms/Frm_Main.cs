@@ -23,24 +23,44 @@ namespace UsersAndRolesWF
 
         private void btnAddTask_Click(object sender, EventArgs e)
         {
-            if (txtTaskTitle.Text == "")
+            if (string.IsNullOrWhiteSpace(txtTaskTitle.Text))
             {
                 MessageBox.Show("A task must have a title at least.");
                 return;
             }
-            UserTask ut = new UserTask()
+            try
             {
-                Title = txtTaskTitle.Text,
-                Description = txtDesc.Text,
-                DueDate = dtDueTime.Value,
-                Sataus = txtStatus.Text,
-                Users = new List<ApplicationUser>()
-            };
-            var selectedIds = listBoxUsers.SelectedItems.Cast<ApplicationUser>().Select(u => u.Id);
-            SelectedUsers(selectedIds, ut);
-            ctx.Tasks.Add(ut);
-            ctx.SaveChanges();
+                UserTask ut = new UserTask()
+                {
+                    Title = txtTaskTitle.Text,
+                    Description = txtDesc.Text,
+                    DueDate = dtDueTime.Value,
+                    Sataus = txtStatus.Text,
+                    Users = new List<ApplicationUser>()
+                };
+                var selectedIds = listBoxUsers.SelectedItems.Cast<ApplicationUser>().Select(u => u.Id);
+                SelectedUsers(selectedIds, ut);
+                ctx.Tasks.Add(ut);
+                ctx.SaveChanges();
+                MessageBox.Show("The task assigned successfully.");
+                ClearText();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
+        private void ClearText()
+        {
+            foreach (Control item in groupBox1.Controls)
+            {
+                if (item is TextBox)
+                {
+                    ((TextBox)item).Clear();
+                }
+            }
+        }
+
         public void SelectedUsers(IEnumerable selectedItems, UserTask userTask)
         {
             foreach (var item in selectedItems)
@@ -73,13 +93,7 @@ namespace UsersAndRolesWF
         {
             if (MessageBox.Show("Sign Out?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) == DialogResult.OK)
             {
-                foreach (Control item in groupBox1.Controls)
-                {
-                    if (item is TextBox)
-                    {
-                        ((TextBox)item).Clear();
-                    }
-                }
+                ClearText();
                 listBoxUsers.DataSource = null;
                 listBoxUsers.Items.Clear();
                 groupBox1.Enabled = false;
