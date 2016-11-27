@@ -114,7 +114,7 @@
       <Project>{5633c7f5-68ed-4311-af0e-311889818ed3}</Project>
       <Name>Shared.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UsersAndRolesMVC\UsersAndRolesMVC.csproj">
+    <ProjectReference Include="..\TaskAssignments.MVC\TaskAssignments.MVC.csproj">
       <Project>{E7488091-6EF4-419F-ADFE-0062407B17FF}</Project>
       <Name>UsersAndRolesMVC</Name>
     </ProjectReference>
