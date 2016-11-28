@@ -38,5 +38,36 @@ namespace UsersAndRolesMVC.Controllers
             var userTasks = context.Users.Include(t => t.Tasks).Where(u => u.Id == id).Single().Tasks;
             return View(userTasks);
         }
+        public ActionResult Delete(int? taskId)
+        {
+            var taskToDelete = context.Tasks.Where(t => t.Id == taskId).Single();
+            if (taskToDelete != null)
+            {
+                context.Tasks.Remove(taskToDelete);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View("Index");
+        }
+        public ActionResult Edit(int? taskId)
+        {
+            var taskToUpdate = context.Tasks.Where(t => t.Id == taskId).Single();
+            if (taskToUpdate != null)
+            {
+                return View(taskToUpdate);
+            }
+            return View("Index");
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include ="Id,Title,Description,DueDate,Status")] UserTask task)
+        {
+            if (ModelState.IsValid)
+            {
+                context.Entry(task).State = EntityState.Modified;
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(task);
+        }
     }
 }

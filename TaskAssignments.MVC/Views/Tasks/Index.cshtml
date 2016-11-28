@@ -17,15 +17,17 @@
     @foreach (var task in Model.Tasks)
     {
         string selectedRow = "";
-        if(ViewBag.Row==task.Id)
+        if (ViewBag.Row == task.Id)
         {
             selectedRow = "success";
         }
         <tr class="@selectedRow">
-            <td>@Html.ActionLink(task.Title, "Index", new { taskId = task.Id })</td>
+            <td>@Html.ActionLink(task.Title, "Index", new { taskId = task.Id }, new { style = "text-decoration:none;" })</td>
             <td>@task.Description</td>
             <td>@task.DueDate.ToShortDateString()</td>
-            <td>@task.Sataus</td>
+            <td>@task.Status</td>
+            <td>@Html.ActionLink("Edit", "Edit", new { taskId = task.Id })</td>
+            <td><span onclick="return confirm('Are you sure you want to delete this task?')">@Html.ActionLink("Delete", "Delete", new { taskId = task.Id })</span></td>
         </tr>
     }
 </table>

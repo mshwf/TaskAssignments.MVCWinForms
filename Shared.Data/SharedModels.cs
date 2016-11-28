@@ -29,9 +29,9 @@ namespace SharedModels
         [Required, MaxLength(100)]
         public string Title { get; set; }
         public string Description { get; set; }
-        [DataType(DataType.Date)]
+        [DataType(DataType.Date), Display(Name = "Due Date"), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime DueDate { get; set; }
-        public string Sataus { get; set; }
+        public string Status { get; set; }
         public ICollection<ApplicationUser> Users { get; set; }
     }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

@@ -35,7 +35,7 @@ namespace UsersAndRolesWF
                     Title = txtTaskTitle.Text,
                     Description = txtDesc.Text,
                     DueDate = dtDueTime.Value,
-                    Sataus = txtStatus.Text,
+                    Status = txtStatus.Text,
                     Users = new List<ApplicationUser>()
                 };
                 var selectedIds = listBoxUsers.SelectedItems.Cast<ApplicationUser>().Select(u => u.Id);
