@@ -1,4 +1,5 @@
-﻿@model SharedModels.UserTask
+﻿@using SharedModels;
+@model UserTask
 @{
     ViewBag.Title = "Edit";
 }
@@ -41,13 +42,30 @@
                 </div>
             </div>
             <div class="form-group">
+                @Html.LabelFor(m => m.Users, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @{
+                        List<ApplicationUser> allUsers = ViewBag.AllUsers;
+                        bool assigned;
+                    }
+                    <div>
+                        @foreach (var user in allUsers)
+                        {
+                            assigned = Model.Users.Select(u => u.Id).Contains(user.Id);
+                            <input type="checkbox" name="asndUsers" value="@user.Id" id="@user.Id" @Html.Raw(assigned ? "checked" : "") /> <label style="font-weight: normal;" for="@user.Id">@user.UserName</label><br />
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Save" class="btn btn-default" />
                 </div>
                 <div class="col-md-2">
-                    @Html.ActionLink("Back to Tasks", "Index", null, new { @class= "btn btn-default" })
+                    @Html.ActionLink("Back to Tasks", "Index", null, new { @class = "btn btn-default" })
                 </div>
             </div>
         </div>
-    }
-}
+                            }
+                        }

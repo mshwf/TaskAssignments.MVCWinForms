@@ -51,18 +51,37 @@ namespace UsersAndRolesMVC.Controllers
         }
         public ActionResult Edit(int? taskId)
         {
-            var taskToUpdate = context.Tasks.Where(t => t.Id == taskId).Single();
-            if (taskToUpdate != null)
+            if (taskId != null)
             {
-                return View(taskToUpdate);
+                var taskToUpdate = context.Tasks.Include("Users").SingleOrDefault(t => t.Id == taskId);
+                ViewBag.AllUsers = context.Users.ToList();
+                if (taskToUpdate != null)
+                {
+                    return View(taskToUpdate);
+                }
             }
-            return View("Index");
+
+            return RedirectToAction("Index");
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include ="Id,Title,Description,DueDate,Status")] UserTask task)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,DueDate,Status")] UserTask task, string[] asndUsers)
         {
             if (ModelState.IsValid)
             {
+                //Should be done this way to ensure loading the Users entity,
+                //otherwise the list will be empty and EF wouldn't be able to read
+                //the data from the db, and will add Users NOT update them
+                //(remember you can't use Find() with Eager loading)
+                task = context.Tasks.Include(t => t.Users).Single(s => s.Id == task.Id);
+                task.Users = new List<ApplicationUser>();
+                if (asndUsers != null)
+                {
+                    foreach (var userId in asndUsers)
+                    {
+                        var user = context.Users.Find(userId);
+                        task.Users.Add(user);
+                    }
+                }
                 context.Entry(task).State = EntityState.Modified;
                 context.SaveChanges();
                 return RedirectToAction("Index");
