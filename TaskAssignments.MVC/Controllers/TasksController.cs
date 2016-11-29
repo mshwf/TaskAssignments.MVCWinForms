@@ -19,14 +19,13 @@ namespace UsersAndRolesMVC.Controllers
             context = new ApplicationDbContext();
         }
         [Authorize(Roles = "Admin")]
-        // GET: Roles
         public ActionResult Index(int? taskId)
         {
             var viewModel = new TasksUsers();
             viewModel.Tasks = context.Tasks.Include(x => x.Users);
             if (taskId != null)
             {
-                viewModel.Users = viewModel.Tasks.Where(t => t.Id == taskId).Single().Users;
+                viewModel.Users = viewModel.Tasks.Single(t => t.Id == taskId).Users;
                 ViewBag.Row = taskId;
             }
             return View(viewModel);
@@ -35,12 +34,12 @@ namespace UsersAndRolesMVC.Controllers
         public ActionResult MyTasks()
         {
             string id = User.Identity.GetUserId();
-            var userTasks = context.Users.Include(t => t.Tasks).Where(u => u.Id == id).Single().Tasks;
+            var userTasks = context.Users.Include(t => t.Tasks).Single(u => u.Id == id).Tasks;
             return View(userTasks);
         }
         public ActionResult Delete(int? taskId)
         {
-            var taskToDelete = context.Tasks.Where(t => t.Id == taskId).Single();
+            var taskToDelete = context.Tasks.Single(t => t.Id == taskId);
             if (taskToDelete != null)
             {
                 context.Tasks.Remove(taskToDelete);
