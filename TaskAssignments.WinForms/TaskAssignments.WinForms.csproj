@@ -49,6 +49,10 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Shared.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Shared.Data\bin\Debug\Shared.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -110,10 +114,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared.Data\Shared.Data.csproj">
-      <Project>{5633c7f5-68ed-4311-af0e-311889818ed3}</Project>
-      <Name>Shared.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TaskAssignments.MVC\TaskAssignments.MVC.csproj">
       <Project>{E7488091-6EF4-419F-ADFE-0062407B17FF}</Project>
       <Name>UsersAndRolesMVC</Name>

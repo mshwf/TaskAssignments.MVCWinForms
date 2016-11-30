@@ -15,10 +15,20 @@ namespace UsersAndRolesWF
             InitializeComponent();
         }
         ApplicationDbContext ctx = new ApplicationDbContext();
-        public static bool auth = false;
+        public static bool Auth { get; set; }
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Frm_Login().ShowDialog();
+            if (Auth)
+            {
+                groupBox1.Enabled = true;
+                logOffToolStripMenuItem.Enabled = true;
+                loginToolStripMenuItem.Enabled = false;
+                listBoxUsers.DataSource = ctx.Users.ToList();
+                listBoxUsers.DisplayMember = "UserName";
+                listBoxUsers.ValueMember = "Id";
+                listBoxUsers.ClearSelected();
+            }
         }
 
         private void btnAddTask_Click(object sender, EventArgs e)
@@ -42,7 +52,7 @@ namespace UsersAndRolesWF
                 SelectedUsers(selectedIds, ut);
                 ctx.Tasks.Add(ut);
                 ctx.SaveChanges();
-                MessageBox.Show("The task assigned successfully.");
+                MessageBox.Show("The task has been assigned successfully.");
                 ClearText();
             }
             catch (Exception ex)
@@ -59,6 +69,7 @@ namespace UsersAndRolesWF
                     ((TextBox)item).Clear();
                 }
             }
+            listBoxUsers.ClearSelected();
         }
 
         public void SelectedUsers(IEnumerable selectedItems, UserTask userTask)
@@ -71,22 +82,7 @@ namespace UsersAndRolesWF
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            groupBox1.Enabled = auth;
-            logOffToolStripMenuItem.Enabled = auth;
-        }
-
-        private void Frm_Main_Activated(object sender, EventArgs e)
-        {
-            if (auth)
-            {
-                listBoxUsers.DataSource = ctx.Users.ToList();
-                listBoxUsers.DisplayMember = "UserName";
-                listBoxUsers.ValueMember = "Id";
-                logOffToolStripMenuItem.Enabled = true;
-                loginToolStripMenuItem.Enabled = false;
-                groupBox1.Enabled = auth;
-            }
-
+            logOffToolStripMenuItem.Enabled = false;
         }
 
         private void logOffToolStripMenuItem_Click(object sender, EventArgs e)
@@ -99,7 +95,7 @@ namespace UsersAndRolesWF
                 groupBox1.Enabled = false;
                 loginToolStripMenuItem.Enabled = true;
                 logOffToolStripMenuItem.Enabled = false;
-                auth = false;
+                Auth = false;
             }
         }
     }

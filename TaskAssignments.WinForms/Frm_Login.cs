@@ -14,20 +14,20 @@ namespace UsersAndRolesWF
             InitializeComponent();
         }
 
-        private void btnLogin_Click(object sender, System.EventArgs e)
+        private async void btnLogin_Click(object sender, System.EventArgs e)
         {
-            if (VerifyUserNamePassword(txtUsername.Text, txtPassword.Text))
+            if (await VerifyUserNamePassword(txtUsername.Text, txtPassword.Text))
             {
-                Frm_Main.auth = true;
+                Frm_Main.Auth = true;
                 Close();
             }
             else
                 MessageBox.Show("Wrong username or password.");
         }
-        public bool VerifyUserNamePassword(string userName, string password)
+        public async Task<bool> VerifyUserNamePassword(string userName, string password)
         {
             var usermanager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var user = usermanager.Find(userName, password);
+            var user = await usermanager.FindAsync(userName, password);
             if (user != null)
             {
                 if (usermanager.IsInRole(user.Id, "Admin"))
