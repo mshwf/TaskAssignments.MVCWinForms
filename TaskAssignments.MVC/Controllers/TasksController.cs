@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
 using UsersAndRolesMVC.ViewModels;
 using SharedModels;
+using System.Net;
+using System.Data.Entity.Infrastructure;
 
 namespace UsersAndRolesMVC.Controllers
 {
@@ -53,7 +55,7 @@ namespace UsersAndRolesMVC.Controllers
             if (taskId != null)
             {
                 var taskToUpdate = context.Tasks.Include("Users").SingleOrDefault(t => t.Id == taskId);
-                ViewBag.AllUsers = context.Users.ToList();
+                PopulateUsers();
                 if (taskToUpdate != null)
                 {
                     return View(taskToUpdate);
@@ -62,29 +64,38 @@ namespace UsersAndRolesMVC.Controllers
 
             return RedirectToAction("Index");
         }
-        [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,DueDate,Status")] UserTask task, string[] asndUsers)
+        public void PopulateUsers()
         {
-            if (ModelState.IsValid)
+            ViewBag.AllUsers = context.Users.ToList();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Edit(int? id, string[] asndUsers)
+        {
+            if (id == null)
             {
-                //Should be done this way to ensure loading the Users entity,
-                //otherwise the list will be empty and EF wouldn't be able to read
-                //the data from the db, and will add Users NOT update them
-                //(remember you can't use Find() with Eager loading)
-                task = context.Tasks.Include(t => t.Users).Single(s => s.Id == task.Id);
-                task.Users = new List<ApplicationUser>();
-                if (asndUsers != null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var task = context.Tasks.Include(t => t.Users).SingleOrDefault(s => s.Id == id);
+            if (task == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            task.Users = new List<ApplicationUser>();
+            if (asndUsers != null)
+            {
+                foreach (var userId in asndUsers)
                 {
-                    foreach (var userId in asndUsers)
-                    {
-                        var user = context.Users.Find(userId);
-                        task.Users.Add(user);
-                    }
+                    var user = context.Users.Single(u => u.Id == userId);
+                    task.Users.Add(user);
                 }
-                context.Entry(task).State = EntityState.Modified;
+            }
+            if (TryUpdateModel(task, "", new string[] { "Title", "Description", "DueDate", "Status" }))
+            {
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
+            PopulateUsers();
             return View(task);
         }
     }
