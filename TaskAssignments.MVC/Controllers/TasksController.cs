@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
 using UsersAndRolesMVC.ViewModels;
 using SharedModels;
-using System.Net;
-using System.Data.Entity.Infrastructure;
 
 namespace UsersAndRolesMVC.Controllers
 {
@@ -32,6 +27,7 @@ namespace UsersAndRolesMVC.Controllers
             }
             return View(viewModel);
         }
+
         [Authorize]
         public ActionResult MyTasks()
         {
@@ -42,45 +38,28 @@ namespace UsersAndRolesMVC.Controllers
         public ActionResult Delete(int? taskId)
         {
             var taskToDelete = context.Tasks.Single(t => t.Id == taskId);
-            if (taskToDelete != null)
-            {
-                context.Tasks.Remove(taskToDelete);
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View("Index");
+            context.Tasks.Remove(taskToDelete);
+            context.SaveChanges();
+            return RedirectToAction("Index");
         }
         public ActionResult Edit(int? taskId)
         {
             if (taskId != null)
             {
                 var taskToUpdate = context.Tasks.Include("Users").SingleOrDefault(t => t.Id == taskId);
-                PopulateUsers();
+                ViewBag.AllUsers = context.Users.ToList();
                 if (taskToUpdate != null)
                 {
                     return View(taskToUpdate);
                 }
             }
-
             return RedirectToAction("Index");
-        }
-        public void PopulateUsers()
-        {
-            ViewBag.AllUsers = context.Users.ToList();
         }
 
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Edit(int? id, string[] asndUsers)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             var task = context.Tasks.Include(t => t.Users).SingleOrDefault(s => s.Id == id);
-            if (task == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
             task.Users = new List<ApplicationUser>();
             if (asndUsers != null)
             {
@@ -95,7 +74,7 @@ namespace UsersAndRolesMVC.Controllers
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            PopulateUsers();
+            ViewBag.AllUsers = context.Users.ToList();
             return View(task);
         }
     }
